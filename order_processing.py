@@ -7,7 +7,6 @@ VIP_DISCOUNT_LOW = 10
 
 
 def _validate_request(request: dict):
-    """Проверяет обязательные поля запроса."""
     if request.get("user_id") is None:
         raise ValueError("user_id is required")
     if request.get("items") is None:
@@ -15,7 +14,6 @@ def _validate_request(request: dict):
 
 
 def _validate_items(items):
-    """Проверяет корректность списка товаров."""
     if not isinstance(items, list):
         raise ValueError("items must be a list")
     if len(items) == 0:
@@ -31,13 +29,11 @@ def _validate_items(items):
 
 
 def _calculate_subtotal(items):
-    """Считает промежуточную сумму."""
     return sum(item["price"] * item["qty"] for item in items)
 
 
 def _calculate_discount(coupon: str, subtotal: int) -> int:
-    """Рассчитывает скидку по купону."""
-    if not coupon:  # Обрабатывает None и пустую строку
+    if not coupon:  
         return 0
     
     if coupon == "SAVE10":
@@ -56,12 +52,10 @@ def _calculate_discount(coupon: str, subtotal: int) -> int:
 
 
 def _generate_order_id(user_id, items_count):
-    """Генерирует ID заказа."""
     return f"{user_id}-{items_count}-X"
 
 
 def process_checkout(request: dict) -> dict:
-    """Обрабатывает оформление заказа."""
     _validate_request(request)
     
     user_id = request["user_id"]
